@@ -1,19 +1,11 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="javax.sql.DataSource" %>
 <%@ page import="java.util.*" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.io.*,java.util.*,java.sql.*" %>
 <%@ page import="javax.servlet.http.*,javax.servlet.*" %>
-<%--
-
-  Created by IntelliJ IDEA.
-  User: william
-  Date: 2017/4/9
-  Time: 10:57
-  To change this template use File | Settings | File Templates.
---%>
-
 <html>
 <head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Title</title>
 </head>
 <body>
@@ -40,7 +32,6 @@
                 rowData.put(md.getColumnName(i), rs.getObject(i));
             }
             list.add(rowData);
-            System.out.println("list:" + list.toString());
         }
         return list;
     }
@@ -48,7 +39,7 @@
 <%
     try {
         Class.forName("com.mysql.jdbc.Driver");
-        conntect = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/ssh_learn", "root", "IWantFuckTheWorld");
+        conntect = DriverManager.getConnection(request.getParameter("db_url"));
     } catch (ClassNotFoundException e ) {
         e.printStackTrace();
     }catch (SQLException e){
@@ -60,7 +51,6 @@
     if (executeSQL != null) {
         row = conntect.prepareStatement(executeSQL).executeUpdate() + "";
     }
-
     String selectSQL = request.getParameter("s");
     if (selectSQL != null) {
         list = resultSetToList(conntect.prepareStatement(selectSQL).executeQuery());
@@ -69,7 +59,6 @@
 <%
     out.println("row:" + row);
 %>
-
 <table border="1">
     <% for (Map<String, Object> map : list) { %>
     <tr>
